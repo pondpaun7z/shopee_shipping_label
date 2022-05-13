@@ -32,3 +32,8 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+/tmp/custom_shipping_labels/
+!/tmp/custom_shipping_labels/.keep
+/tmp/shipping_labels/
+!/tmp/shipping_labels/.keep
