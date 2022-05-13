@@ -49,10 +49,10 @@ class CustomShippingLabelService
 
     output_filename = "custom-#{file.original_filename}"
     output_path = Rails.root.join("tmp", "custom_shipping_labels", output_filename).to_s
-    Prawn::Document.generate(output_path) do
+    Prawn::Document.generate(output_path, page_size: "A4") do
       pdf.pages.count.times do |i|
         combile_file = Rails.root.join("tmp", "shipping_labels", "combile_file-#{file_key}.jpg")
-        image combile_file, width: 580, at: [-20, 750]
+        image combile_file, width: 600, at: [-35, 800]
         start_new_page if i < pdf.pages.count - 1
       end
     end
