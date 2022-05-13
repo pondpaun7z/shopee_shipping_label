@@ -1,6 +1,9 @@
 <div class="container mx-auto py-10">
+  <h1 class="text-4xl text-center text-orange-500 mb-4">Shopee Shipping Label</h1>
+
   <div class="grid grid-col-1">
     <div>
+
       <p class="text-2xl text-center">
         หากคุณพบปัญหาใช้เครื่องปริ้นเล็กแล้ว Barcode ไม่ชัด ทางขนส่งสแกนไม่ได้ <br>
         เว็บนี้ช่วยคุณได้ ใช้งานฟรี
@@ -8,11 +11,14 @@
       <%= image_tag "sample.png", class: "w-full lg:w-3/4 xl:w-1/2 mx-auto" %>
 
       <%= simple_form_for :file, url: homes_path, data: { turbo: "false" }, class: "w-full" do |f| %>
-        <div class="my-3">
+        <div class="my-3 text-center lg:text-left">
           <%= f.input :shipping_label_file, as: :file, label: "ใบปะหน้า Shopee: ", input_html: { accept: "application/pdf"} %>
           <small><i>ทุกการอัพโหลด ไฟล์จะไม่ถูกเก็บในระบบ</i></small>
         </div>
-        <%= f.submit "อัพโหลดไฟล์", class: "text-white bg-orange-500 hover:bg-orange-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 cursor-pointer" %>
+
+        <div class="text-center lg:text-left">
+          <%= f.submit "อัพโหลดไฟล์", class: "text-white bg-orange-500 hover:bg-orange-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 cursor-pointer" %>
+        </div>
       <% end %>
     </div>
 
