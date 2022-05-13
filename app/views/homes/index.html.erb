@@ -1,0 +1,4 @@
+<%= form_for :file, url: homes_path, data: { turbo: "false" }  do |f| %>
+  <%= f.file_field :shipping_label_file %>
+  <%= f.submit %>
+<% end %>

@@ -1,14 +1,16 @@
 class CustomShippingLabelService
-  def self.perform
-    new.perform
+  def self.perform(file)
+    new(file).perform
   end
 
-  # def initialize
-  # end
+  def initialize(file)
+    @file = file
+  end
+
+  attr_reader :file
 
   def perform
-    pdf_file = Rails.root.join("tmp", "shopee.pdf")
-    pdf = MiniMagick::Image.open(pdf_file)
+    pdf = MiniMagick::Image.open(file.path)
 
     pdf.pages.each_with_index do |page, index|
       MiniMagick::Tool::Convert.new do |convert|
@@ -45,7 +47,8 @@ class CustomShippingLabelService
       end
     end
 
-    output_path = Rails.root.join("tmp", "output.pdf").to_s
+    filename = "custom-#{file.original_filename}"
+    output_path = Rails.root.join("tmp", "custom_shipping_labels", filename).to_s
     Prawn::Document.generate(output_path) do
       pdf.pages.count.times do |i|
         combile_file = Rails.root.join("tmp", "shipping_labels", "combile_file-#{i}.jpg")
