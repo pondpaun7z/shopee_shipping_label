@@ -10,48 +10,48 @@ class CustomShippingLabelService
   attr_reader :file
 
   def perform
+    file_key = file.original_filename.gsub(".pdf", "")
     pdf = MiniMagick::Image.open(file.path)
 
-    pdf.pages.each_with_index do |page, index|
+    pdf.pages.each do |page|
       MiniMagick::Tool::Convert.new do |convert|
         convert.background "white"
         convert.flatten
         convert.density 150
         convert.quality 100
         convert << page.path
-        convert << Rails.root.join("tmp", "shipping_labels", "label-#{index}.jpg").to_s
-
-        shipping_label_path = Rails.root.join("tmp", "shipping_labels", "label-#{index}.jpg").to_s
-
-        shipping_label = MiniMagick::Image.open(shipping_label_path)
-
-        image_split1_path = Rails.root.join("tmp", "shipping_labels", "qrcode-#{index}.jpg")
-        shipping_label.crop "485x195+700+0-200-0"
-        shipping_label.write image_split1_path
-
-        combile_file = Rails.root.join("tmp", "shipping_labels", "combile_file-#{index}.jpg")
-
-        composite_image = MiniMagick::Image.open(shipping_label_path)
-        image = MiniMagick::Image.open(image_split1_path)
-        image.resize("700x")
-
-        image.layers.count.times do |i|
-          composite_image = composite_image.composite(image.layers[i]) do |c|
-            c.compose "Over" # OverCompositeOp
-            c.geometry "+250+1300"
-          end
-        end
-
-        composite_image.quality(85)
-        composite_image.write(combile_file)
+        convert << Rails.root.join("tmp", "shipping_labels", "label-#{file_key}.jpg").to_s
       end
+
+      shipping_label_path = Rails.root.join("tmp", "shipping_labels", "label-#{file_key}.jpg").to_s
+      shipping_label = MiniMagick::Image.open(shipping_label_path)
+
+      qrcode_file_path = Rails.root.join("tmp", "shipping_labels", "qrcode-#{file_key}.jpg")
+      shipping_label.crop "485x195+700+0-200-0"
+      shipping_label.write qrcode_file_path
+
+      combile_file = Rails.root.join("tmp", "shipping_labels", "combile_file-#{file_key}.jpg")
+
+      composite_image = MiniMagick::Image.open(shipping_label_path)
+      image = MiniMagick::Image.open(qrcode_file_path)
+      image.resize("700x")
+
+      image.layers.count.times do |i|
+        composite_image = composite_image.composite(image.layers[i]) do |c|
+          c.compose "Over" # OverCompositeOp
+          c.geometry "+250+1300"
+        end
+      end
+
+      composite_image.quality(85)
+      composite_image.write(combile_file)
     end
 
-    filename = "custom-#{file.original_filename}"
-    output_path = Rails.root.join("tmp", "custom_shipping_labels", filename).to_s
+    output_filename = "custom-#{file.original_filename}"
+    output_path = Rails.root.join("tmp", "custom_shipping_labels", output_filename).to_s
     Prawn::Document.generate(output_path) do
       pdf.pages.count.times do |i|
-        combile_file = Rails.root.join("tmp", "shipping_labels", "combile_file-#{i}.jpg")
+        combile_file = Rails.root.join("tmp", "shipping_labels", "combile_file-#{file_key}.jpg")
         image combile_file, width: 580, at: [-20, 750]
         start_new_page if i < pdf.pages.count - 1
       end
