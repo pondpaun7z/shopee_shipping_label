@@ -1,19 +1,19 @@
-<div class="container flex flex-col h-screen p-10 mx-auto">
-  <div>
-    <p class="text-2xl text-center">หากคุณพบปัญหาใช้เครื่องปริ้นเล็กแล้ว Barcode ไม่ชัด ทาง ขนส่งสแกนไม่ได้ <br>เว็บนี้ช่วยคุณได้ ใช้งานฟรี</p>
-    <%= image_tag "sample.png", class: "w-full lg:w-3/4 mx-auto" %>
+<div class="container mx-auto py-10">
+  <div class="grid grid-col-1">
+    <div>
+      <p class="text-2xl text-center">หากคุณพบปัญหาใช้เครื่องปริ้นเล็กแล้ว Barcode ไม่ชัด ทาง ขนส่งสแกนไม่ได้ <br>เว็บนี้ช่วยคุณได้ ใช้งานฟรี</p>
+      <%= image_tag "sample.png", class: "w-full lg:w-3/4 xl:w-1/2 mx-auto" %>
 
-    <div class="border-1">
-      <%= simple_form_for :file, url: homes_path, data: { turbo: "false" } do |f| %>
+      <%= simple_form_for :file, url: homes_path, data: { turbo: "false" }, class: "w-full" do |f| %>
         <div class="my-3">
           <%= f.input :shipping_label_file, as: :file, label: "ใบปะหน้า Shopee: ", input_html: { accept: "application/pdf"} %>
         </div>
         <%= f.submit "อัพโหลดไฟล์", class: "text-white bg-orange-500 hover:bg-orange-600 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 cursor-pointer" %>
       <% end %>
     </div>
-  </div>
 
-  <div class="mt-auto w-full text-center">
-    <a href="https://github.com/pondpaun7z/shopee_shipping_label" class="text-orange-500 underline ">View Source Code</a>
+    <div class="mt-32 w-full text-center">
+      <a href="https://github.com/pondpaun7z/shopee_shipping_label" class="text-orange-500 underline ">View Source Code</a>
+    </div>
   </div>
 </div>
