@@ -27,7 +27,7 @@ class CustomShippingLabelService
       shipping_label = MiniMagick::Image.open(shipping_label_path)
 
       qrcode_file_path = Rails.root.join("tmp", "shipping_labels", "qrcode-#{file_key}-#{index}.jpg")
-      shipping_label.crop "485x195+700+0-200-0"
+      shipping_label.crop "510x195+670+0-200-0"
       shipping_label.write qrcode_file_path
 
       combile_file = Rails.root.join("tmp", "shipping_labels", "combile_file-#{file_key}-#{index}.jpg")
